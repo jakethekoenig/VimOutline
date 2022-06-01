@@ -38,6 +38,17 @@ function! WrapOutside(start, end)
     exe "" . l:line
 endfunction
 
+function! HideIndent(level)
+    doautocmd Syntax
+    " TODO: put these file level?
+    set conceallevel=2
+    set concealcursor=nvic
+    if (indent(a:level)>0)
+        let l:s = 'syn match Concealed "^.\{' . a:level . '\}" conceal'
+        exec l:s
+    endif
+endfunction
+
 function! FocusBullet()
     normal zR
     let l:start = line('.')
@@ -53,6 +64,19 @@ function! FocusBullet()
         let l:s = 'syn match Concealed "^.\{' . indent(l:start) . '\}" conceal'
         exec l:s
     endif
+endfunction
+
+function! FocusContext(level)
+    normal zR
+    let l:start = line('.')
+    let l:head = HeadOf(l:start, 0, a:level)
+    let l:tail = HeadOf(l:start, 1, a:level)
+    let l:tail = l:tail - 1
+    if (l:tail<l:head)
+        let l:tail = l:head
+    endif
+    call WrapOutside(l:head, l:tail)
+    call HideIndent(indent(l:head))
 endfunction
 
 function! ResetBullet()
@@ -75,7 +99,8 @@ endfunction
 function! HeadOf(line, next, level)
     let l:indent = indent(a:line)
     let l:at = a:line
-    while (indent(l:at)+4*a:level>l:indent && l:at>1)
+    let l:last = line('$')
+    while (indent(l:at)+4*a:level>l:indent && l:at>1 && l:at<l:last)
         let l:at = l:at-1+2*a:next
     endwhile
     return l:at
