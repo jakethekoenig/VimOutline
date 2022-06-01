@@ -1,3 +1,6 @@
+" Let's steal zz for focus on current bullet and z[enter] for focus on current
+" context. We can take [number] operator to unfurl that amount of upper or
+" lower context.
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
@@ -61,18 +64,18 @@ endfunction
 
 function! Head()
     let l:line = line('.')
-    return HeadOf(l:line, 0)
+    return HeadOf(l:line, 0, 1)
 endfunction
 
 function! Tail()
     let l:line = line('.')
-    return HeadOf(l:line, 1)
+    return HeadOf(l:line, 1, 1)
 endfunction
 
-function! HeadOf(line, next)
+function! HeadOf(line, next, level)
     let l:indent = indent(a:line)
     let l:at = a:line
-    while (indent(l:at)>=l:indent && l:at>1)
+    while (indent(l:at)+4*a:level>l:indent && l:at>1)
         let l:at = l:at-1+2*a:next
     endwhile
     return l:at
