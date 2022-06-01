@@ -22,20 +22,20 @@ endfunction
 function! BulletContext()
     let l:line = line('.')
     let l:start = JumpIndent(0, 1)
-    exe l:start
+    exec l:start
     call FocusBullet()
-    exe l:line
+    exec l:line
 endfunction
 
 function! WrapOutside(start, end)
     set foldmethod=manual
     let l:line = line('.')
     if (a:start>1)
-        exe "normal ggzf" . (a:start-2) . "j"
+        exec "normal ggzf" . (a:start-2) . "j"
     endif
-    exe  "" . (a:end+1)
+    exec  "" . (a:end+1)
     normal zfG
-    exe "" . l:line
+    exec "" . l:line
 endfunction
 
 function! HideIndent(level)
@@ -112,6 +112,30 @@ function! HeadOf(line, next, level)
     return l:at
 endfunction
 
+function! FoldChildren(open, all)
+    let l:start = line('.')
+    let l:end = HeadOf(l:start, 1, 0)-1
+    echom l:end
+    if (a:open)
+        if (a:all)
+            let l:cmd = "".l:start.",".l:end."foldopen"
+        else
+            let l:cmd = "".l:start.",".l:end."foldopen!"
+        endif
+    else
+        if (a:all)
+            let l:cmd = "".l:start.",".l:end."foldclose"
+        else
+            let l:cmd = "".l:start.",".l:end."foldclose!"
+        endif
+    endif
+    exec l:cmd
+endfunction
+
 nnoremap <localleader><CR> :call FocusBullet()<CR>
 nnoremap <localleader><BS> :call ResetBullet()<CR>
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
+nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
+nnoremap zr :<C-U>call FoldChildren(1, 0)<CR>
+nnoremap zM :<C-U>call FoldChildren(0, 1)<CR>
+nnoremap zR :<C-U>call FoldChildren(1, 1)<CR>
