@@ -6,7 +6,7 @@ function! JumpIndent(forward, relativeindent)
     let l:column = col('.')
     let l:at = line
     let l:last = line('$')
-    while (l:at <= l:last)
+    while (l:at <= l:last && l:at>=1)
         let l:at = l:at + 2 * a:forward - 1
         " TODO: use variable for 4
         if (indent(l:at) + 4*a:relativeindent <= indent(l:line))
