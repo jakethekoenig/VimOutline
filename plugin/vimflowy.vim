@@ -59,5 +59,19 @@ function! ResetBullet()
     doautocmd Syntax
 endfunction
 
+function! Head()
+    let l:line = line('.')
+    return HeadOf(l:line)
+endfunction
+
+function! HeadOf(line)
+    let l:indent = indent(a:line)
+    let l:at = a:line
+    while (indent(l:at)>=l:indent && l:at>1)
+        let l:at = l:at-1
+    endwhile
+    return l:at
+endfunction
+
 nnoremap <localleader><CR> :call FocusBullet()<CR>
 nnoremap <localleader><BS> :call ResetBullet()<CR>
