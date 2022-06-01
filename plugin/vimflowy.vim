@@ -43,7 +43,7 @@ function! HideIndent(level)
     " TODO: put these file level?
     set conceallevel=2
     set concealcursor=nvic
-    if (indent(a:level)>0)
+    if (a:level>0)
         let l:s = 'syn match Concealed "^.\{' . a:level . '\}" conceal'
         exec l:s
     endif
@@ -97,8 +97,14 @@ function! Tail()
 endfunction
 
 function! HeadOf(line, next, level)
+    if (a:next==0 && a:level==0)
+        return a:line
+    endif
     let l:indent = indent(a:line)
     let l:at = a:line
+    if (a:level==0)
+        let l:at = l:at + 1
+    endif
     let l:last = line('$')
     while (indent(l:at)+4*a:level>l:indent && l:at>1 && l:at<l:last)
         let l:at = l:at-1+2*a:next
@@ -108,3 +114,4 @@ endfunction
 
 nnoremap <localleader><CR> :call FocusBullet()<CR>
 nnoremap <localleader><BS> :call ResetBullet()<CR>
+nnoremap zz :<C-U>call FocusContext(v:count)<CR>
