@@ -97,7 +97,7 @@ function! Tail()
 endfunction
 
 function! HeadOf(line, next, level)
-    if (a:next==0 && a:level==0)
+    if (a:next==0 && (a:level==0 || indent(a:line)==0))
         return a:line
     endif
     let l:indent = indent(a:line)
