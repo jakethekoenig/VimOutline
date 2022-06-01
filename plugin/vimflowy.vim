@@ -23,6 +23,8 @@ function! JumpIndent()
 endfunction
 
 function! WrapOutside(start, end)
+    echom a:start
+    echom a:end
     let line = line('.')
     if (a:start>1)
         exe "normal ggzf" . (a:start-2) . "j"
@@ -30,4 +32,10 @@ function! WrapOutside(start, end)
     exe  "" . (a:end+1)
     exe "normal zfG"
     exe "" . line
+endfunction
+
+function! FocusBullet()
+    let start = line('.')
+    let end = JumpIndent()
+    call WrapOutside(start, end)
 endfunction
