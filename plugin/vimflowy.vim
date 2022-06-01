@@ -2,53 +2,53 @@
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
 function! JumpIndent(forward, relativeindent)
-    let line = line('.')
-    let column = col('.')
-    let at = line
-    let last = line('$')
-    while (at <= last)
-        let at = at + 2 * a:forward - 1
+    let l:line = line('.')
+    let l:column = col('.')
+    let l:at = line
+    let l:last = line('$')
+    while (l:at <= l:last)
+        let l:at = l:at + 2 * a:forward - 1
         " TODO: use variable for 4
-        if (indent(at) + 4*a:relativeindent <= indent(line))
-            return at
+        if (indent(l:at) + 4*a:relativeindent <= indent(l:line))
+            return l:at
         endif
     endwhile
-    return line
+    return l:line
 endfunction
 
 function! BulletContext()
-    let line = line('.')
-    let start = JumpIndent(0, 1)
-    exe start
+    let l:line = line('.')
+    let l:start = JumpIndent(0, 1)
+    exe l:start
     call FocusBullet()
-    exe line
+    exe l:line
 endfunction
 
 function! WrapOutside(start, end)
     set foldmethod=manual
-    let line = line('.')
+    let l:line = line('.')
     if (a:start>1)
         exe "normal ggzf" . (a:start-2) . "j"
     endif
     exe  "" . (a:end+1)
     normal zfG
-    exe "" . line
+    exe "" . l:line
 endfunction
 
 function! FocusBullet()
     normal zR
-    let start = line('.')
-    let end = JumpIndent(1, 0)-1
-    if (end<start)
-        let end = start
+    let l:start = line('.')
+    let l:end = JumpIndent(1, 0)-1
+    if (l:end<l:start)
+        let l:end = l:start
     endif
-    call WrapOutside(start, end)
+    call WrapOutside(l:start, l:end)
     doautocmd Syntax
     set conceallevel=2
     set concealcursor=nvic
-    if (indent(start)>0)
-        let s = 'syn match Concealed "^.\{' . indent(start) . '\}" conceal'
-        exec s
+    if (indent(l:start)>0)
+        let l:s = 'syn match Concealed "^.\{' . indent(l:start) . '\}" conceal'
+        exec l:s
     endif
 endfunction
 
