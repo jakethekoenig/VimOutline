@@ -7,9 +7,9 @@ function! JumpIndent(forward, relativeindent)
     let at = line
     let last = line('$')
     while (at <= last)
-        let at = at + 2 * forward - 1
+        let at = at + 2 * a:forward - 1
         " TODO: use variable for 4
-        if (indent(at) + 4*relativeindent <= indent(line))
+        if (indent(at) + 4*a:relativeindent <= indent(line))
             return at
         endif
     endwhile
