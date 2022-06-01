@@ -61,14 +61,19 @@ endfunction
 
 function! Head()
     let l:line = line('.')
-    return HeadOf(l:line)
+    return HeadOf(l:line, 0)
 endfunction
 
-function! HeadOf(line)
+function! Tail()
+    let l:line = line('.')
+    return HeadOf(l:line, 1)
+endfunction
+
+function! HeadOf(line, next)
     let l:indent = indent(a:line)
     let l:at = a:line
     while (indent(l:at)>=l:indent && l:at>1)
-        let l:at = l:at-1
+        let l:at = l:at-1+2*a:next
     endwhile
     return l:at
 endfunction
