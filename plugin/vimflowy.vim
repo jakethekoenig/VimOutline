@@ -1,7 +1,3 @@
-" if exists("g:loaded_vimflowy")
-	" finish
-" endif
-let g:loaded_vimflowy = 1
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
@@ -23,8 +19,7 @@ function! JumpIndent()
 endfunction
 
 function! WrapOutside(start, end)
-    echom a:start
-    echom a:end
+    set foldmethod=manual
     let line = line('.')
     if (a:start>1)
         exe "normal ggzf" . (a:start-2) . "j"
@@ -36,6 +31,13 @@ endfunction
 
 function! FocusBullet()
     let start = line('.')
-    let end = JumpIndent()
+    let end = JumpIndent()-1
     call WrapOutside(start, end)
+    syntax match Concealed '' conceal
+    syntax clear Concealed
+    set conceallevel=2
+    set concealcursor=nvic
+    let s = 'syn match Concealed "^.\{' . indent(start) . '\}" conceal'
+    exec s
+
 endfunction
