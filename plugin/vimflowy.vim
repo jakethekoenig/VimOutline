@@ -162,6 +162,7 @@ endfunction
 nnoremap <localleader><CR> :call FocusBullet()<CR>
 nnoremap <localleader><BS> :call ResetBullet()<CR>
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
+nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
 " nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
 " nnoremap zr :<C-U>call FoldChildren(1, 0)<CR>
 " nnoremap zM :<C-U>call FoldChildren(0, 1)<CR>
