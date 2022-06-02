@@ -32,25 +32,6 @@ function! Parent(line, level)
     return l:at
 endfunction
 
-function! HeadOf(line, next, level)
-    if (a:next==0 && (a:level==0 || indent(a:line)==0))
-        return a:line
-    endif
-    let l:indent = indent(a:line)
-    let l:at = a:line
-    if (a:level==0)
-        let l:at = l:at + 1
-    endif
-    let l:last = line('$')
-    while (indent(l:at)+4*a:level>l:indent && l:at>1)
-        if (l:at == l:last)
-            return l:at + 1
-        endif
-        let l:at = l:at-1+2*a:next
-    endwhile
-    return l:at
-endfunction
-
 function! WrapOutside(start, end)
     set foldmethod=manual
     let l:line = line('.')
@@ -85,7 +66,7 @@ endfunction
 function! FoldChildren(level)
     let l:start = line('.')
     let l:sind = indent(l:start)
-    let l:end = HeadOf(l:start, 1, 0)-1
+    let l:end = EndContext(l:start)
     let l:last = -1
     let l:at = l:start
     exec l:start.",".l:end."fold"
