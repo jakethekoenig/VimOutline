@@ -17,7 +17,10 @@ function! HeadOf(line, next, level)
         let l:at = l:at + 1
     endif
     let l:last = line('$')
-    while (indent(l:at)+4*a:level>l:indent && l:at>1 && l:at<l:last)
+    while (indent(l:at)+4*a:level>l:indent && l:at>1)
+        if (l:at == l:last)
+            return l:at + 1
+        endif
         let l:at = l:at-1+2*a:next
     endwhile
     return l:at
@@ -29,7 +32,9 @@ function! WrapOutside(start, end)
     if (a:start>1)
         exec "1,".(a:start-1)."fold"
     endif
-    exec "".(a:end+1).",$"."fold"
+    if (a:end<line('$'))
+        exec "".(a:end+1).",$"."fold"
+    endif
 endfunction
 
 function! HideIndent(level)
