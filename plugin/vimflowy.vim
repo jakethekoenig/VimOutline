@@ -132,10 +132,35 @@ function! FoldChildren(open, all)
     exec l:cmd
 endfunction
 
+" Leave folds outside of this bullets children untouched
+"
+function! FoldChildren(level)
+    let l:start = line('.')
+    let l:sind = indent(l:start)
+    let l:end = HeadOf(l:start, 1, 0)-1
+    let l:last = -1
+    let l:at = l:start
+    exec "normal zf".(l:end-l:start)."j"
+    let l:cmd = "".l:start.",".l:end."foldopen!"
+    exec l:cmd
+    while (l:at <= l:end)
+        if (l:last == -1 && indent(l:at)-l:sind>=4*a:level)
+            let l:last = l:at
+        endif
+        if (l:last != -1 && (indent(l:at)-l:sind<4*a:level || l:at == l:end))
+            exec l:last
+            exec "normal zf" . (l:at - l:last) . "j"
+            let l:last = -1
+        endif
+        let l:at = l:at + 1
+    endwhile
+    exec l:start
+endfunction
+
 nnoremap <localleader><CR> :call FocusBullet()<CR>
 nnoremap <localleader><BS> :call ResetBullet()<CR>
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
-nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
-nnoremap zr :<C-U>call FoldChildren(1, 0)<CR>
-nnoremap zM :<C-U>call FoldChildren(0, 1)<CR>
-nnoremap zR :<C-U>call FoldChildren(1, 1)<CR>
+" nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
+" nnoremap zr :<C-U>call FoldChildren(1, 0)<CR>
+" nnoremap zM :<C-U>call FoldChildren(0, 1)<CR>
+" nnoremap zR :<C-U>call FoldChildren(1, 1)<CR>
