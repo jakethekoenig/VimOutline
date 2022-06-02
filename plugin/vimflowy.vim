@@ -4,6 +4,25 @@
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
+function! HeadOf(line, next, level)
+    if (a:next==0 && (a:level==0 || indent(a:line)==0))
+        if (a:level>0)
+            return 1
+        endif
+        return a:line
+    endif
+    let l:indent = indent(a:line)
+    let l:at = a:line
+    if (a:level==0)
+        let l:at = l:at + 1
+    endif
+    let l:last = line('$')
+    while (indent(l:at)+4*a:level>l:indent && l:at>1 && l:at<l:last)
+        let l:at = l:at-1+2*a:next
+    endwhile
+    return l:at
+endfunction
+
 function! JumpIndent(forward, relativeindent)
     let l:line = line('.')
     let l:column = col('.')
@@ -31,11 +50,9 @@ function! WrapOutside(start, end)
     set foldmethod=manual
     let l:line = line('.')
     if (a:start>1)
-        exec "normal ggzf" . (a:start-2) . "j"
+        exec "1,".(a:start-1)."fold"
     endif
-    exec  "" . (a:end+1)
-    normal zfG
-    exec "" . l:line
+    exec "".(a:end+1).",$"."fold"
 endfunction
 
 function! HideIndent(level)
@@ -96,22 +113,6 @@ function! Tail()
     return HeadOf(l:line, 1, 1)
 endfunction
 
-function! HeadOf(line, next, level)
-    if (a:next==0 && (a:level==0 || indent(a:line)==0))
-        return a:line
-    endif
-    let l:indent = indent(a:line)
-    let l:at = a:line
-    if (a:level==0)
-        let l:at = l:at + 1
-    endif
-    let l:last = line('$')
-    while (indent(l:at)+4*a:level>l:indent && l:at>1 && l:at<l:last)
-        let l:at = l:at-1+2*a:next
-    endwhile
-    return l:at
-endfunction
-
 function! FoldChildren(open, all)
     let l:start = line('.')
     let l:end = HeadOf(l:start, 1, 0)-1
@@ -140,21 +141,22 @@ function! FoldChildren(level)
     let l:end = HeadOf(l:start, 1, 0)-1
     let l:last = -1
     let l:at = l:start
-    exec "normal zf".(l:end-l:start)."j"
-    let l:cmd = "".l:start.",".l:end."foldopen!"
-    exec l:cmd
+    exec l:start.",".l:end."fold"
+    exec "".l:start.",".l:end."foldopen!"
     while (l:at <= l:end)
         if (l:last == -1 && indent(l:at)-l:sind>=4*a:level)
             let l:last = l:at
         endif
         if (l:last != -1 && (indent(l:at)-l:sind<4*a:level || l:at == l:end))
-            exec l:last
-            exec "normal zf" . (l:at - l:last) . "j"
+            if (indent(l:at)-l:sind<4*a:level)
+                exec l:last.",".(l:at-1)."fold"
+            else
+                exec l:last.",".(l:at)."fold"
+            endif
             let l:last = -1
         endif
         let l:at = l:at + 1
     endwhile
-    exec l:start
 endfunction
 
 nnoremap <localleader><CR> :call FocusBullet()<CR>
