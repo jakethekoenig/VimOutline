@@ -4,6 +4,9 @@ nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 " The last line that is a descendent of line
 " E.g. the first line with indent <= line's
 function! EndContext(line)
+    if (a:line == 1)
+        return line('$')
+    endif
     let l:indent = indent(a:line)
     let l:at = a:line + 1
     while (indent(l:at) > l:indent)
@@ -55,7 +58,7 @@ function! WrapOutside(start, end)
         exec "1,".(a:start-1)."fold"
     endif
     if (a:end<line('$'))
-        exec "".(a:end+1).",$"."fold"
+        exec "".(a:end+1).",$fold"
     endif
 endfunction
 
@@ -71,13 +74,10 @@ function! HideIndent(level)
 endfunction
 
 function! FocusContext(level)
+    normal zE
     let l:start = line('.')
-    let l:head = HeadOf(l:start, 0, a:level)
-    let l:tail = HeadOf(l:start, 1, a:level)
-    let l:tail = l:tail - 1
-    if (l:tail<l:head)
-        let l:tail = l:head
-    endif
+    let l:head = Parent(l:start, a:level)
+    let l:tail = EndContext(l:head)
     call WrapOutside(l:head, l:tail)
     call HideIndent(indent(l:head))
 endfunction
