@@ -22,8 +22,8 @@ function! Parent(line, level)
     if (a:level == 0)
         return a:line
     endif
-    let l:at = a:line
-    while (indent(l:at) > indent(a:line) - 4*a:level && l:at>1)
+    l:at = a:line
+    while (indent(l:at) > indent(a:line) - 4*l:level && l:at>1)
         let l:at = l:at - 1
     endwhile
     return l:at
