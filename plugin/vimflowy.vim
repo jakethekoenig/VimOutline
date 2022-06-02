@@ -3,9 +3,6 @@ nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
 function! HeadOf(line, next, level)
     if (a:next==0 && (a:level==0 || indent(a:line)==0))
-        if (a:level>0)
-            return 1
-        endif
         return a:line
     endif
     let l:indent = indent(a:line)
@@ -46,7 +43,6 @@ function! HideIndent(level)
 endfunction
 
 function! FocusContext(level)
-    normal zR
     let l:start = line('.')
     let l:head = HeadOf(l:start, 0, a:level)
     let l:tail = HeadOf(l:start, 1, a:level)
@@ -58,8 +54,6 @@ function! FocusContext(level)
     call HideIndent(indent(l:head))
 endfunction
 
-" Leave folds outside of this bullets children untouched
-"
 function! FoldChildren(level)
     let l:start = line('.')
     let l:sind = indent(l:start)
