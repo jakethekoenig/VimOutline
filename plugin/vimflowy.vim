@@ -72,11 +72,11 @@ function! FoldChildren(level)
     exec l:start.",".l:end."fold"
     exec "".l:start.",".l:end."foldopen!"
     while (l:at <= l:end)
-        if (l:last == -1 && indent(l:at)-l:sind>=4*a:level)
+        if (l:last == -1 && indent(l:at)-l:sind>4*a:level)
             let l:last = l:at
         endif
-        if (l:last != -1 && (indent(l:at)-l:sind<4*a:level || l:at == l:end))
-            if (indent(l:at)-l:sind<4*a:level)
+        if (l:last != -1 && (indent(l:at)-l:sind<=4*a:level || l:at == l:end))
+            if (indent(l:at)-l:sind<=4*a:level)
                 exec l:last.",".(l:at-1)."fold"
             else
                 exec l:last.",".(l:at)."fold"
