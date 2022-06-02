@@ -58,26 +58,6 @@ function! FocusContext(level)
     call HideIndent(indent(l:head))
 endfunction
 
-function! FoldChildren(open, all)
-    let l:start = line('.')
-    let l:end = HeadOf(l:start, 1, 0)-1
-    echom l:end
-    if (a:open)
-        if (a:all)
-            let l:cmd = "".l:start.",".l:end."foldopen"
-        else
-            let l:cmd = "".l:start.",".l:end."foldopen!"
-        endif
-    else
-        if (a:all)
-            let l:cmd = "".l:start.",".l:end."foldclose"
-        else
-            let l:cmd = "".l:start.",".l:end."foldclose!"
-        endif
-    endif
-    exec l:cmd
-endfunction
-
 " Leave folds outside of this bullets children untouched
 "
 function! FoldChildren(level)
