@@ -23,29 +23,6 @@ function! HeadOf(line, next, level)
     return l:at
 endfunction
 
-function! JumpIndent(forward, relativeindent)
-    let l:line = line('.')
-    let l:column = col('.')
-    let l:at = line
-    let l:last = line('$')
-    while (l:at <= l:last && l:at>=1)
-        let l:at = l:at + 2 * a:forward - 1
-        " TODO: use variable for 4
-        if (indent(l:at) + 4*a:relativeindent <= indent(l:line))
-            return l:at
-        endif
-    endwhile
-    return l:line
-endfunction
-
-function! BulletContext()
-    let l:line = line('.')
-    let l:start = JumpIndent(0, 1)
-    exec l:start
-    call FocusBullet()
-    exec l:line
-endfunction
-
 function! WrapOutside(start, end)
     set foldmethod=manual
     let l:line = line('.')
@@ -66,23 +43,6 @@ function! HideIndent(level)
     endif
 endfunction
 
-function! FocusBullet()
-    normal zR
-    let l:start = line('.')
-    let l:end = JumpIndent(1, 0)-1
-    if (l:end<l:start)
-        let l:end = l:start
-    endif
-    call WrapOutside(l:start, l:end)
-    doautocmd Syntax
-    set conceallevel=2
-    set concealcursor=nvic
-    if (indent(l:start)>0)
-        let l:s = 'syn match Concealed "^.\{' . indent(l:start) . '\}" conceal'
-        exec l:s
-    endif
-endfunction
-
 function! FocusContext(level)
     normal zR
     let l:start = line('.')
@@ -94,13 +54,6 @@ function! FocusContext(level)
     endif
     call WrapOutside(l:head, l:tail)
     call HideIndent(indent(l:head))
-endfunction
-
-function! ResetBullet()
-    normal zR
-    syntax match Concealed '' conceal
-    syntax clear Concealed
-    doautocmd Syntax
 endfunction
 
 function! Head()
@@ -159,8 +112,6 @@ function! FoldChildren(level)
     endwhile
 endfunction
 
-nnoremap <localleader><CR> :call FocusBullet()<CR>
-nnoremap <localleader><BS> :call ResetBullet()<CR>
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
 nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
 " nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
