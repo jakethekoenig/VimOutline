@@ -1,6 +1,3 @@
-" Let's steal zz for focus on current bullet and z[enter] for focus on current
-" context. We can take [number] operator to unfurl that amount of upper or
-" lower context.
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
@@ -59,16 +56,6 @@ function! FocusContext(level)
     endif
     call WrapOutside(l:head, l:tail)
     call HideIndent(indent(l:head))
-endfunction
-
-function! Head()
-    let l:line = line('.')
-    return HeadOf(l:line, 0, 1)
-endfunction
-
-function! Tail()
-    let l:line = line('.')
-    return HeadOf(l:line, 1, 1)
 endfunction
 
 function! FoldChildren(open, all)
