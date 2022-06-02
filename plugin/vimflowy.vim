@@ -89,7 +89,23 @@ endfunction
 
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
 nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
-" nnoremap zm :<C-U>call FoldChildren(0, 0)<CR>
-" nnoremap zr :<C-U>call FoldChildren(1, 0)<CR>
-" nnoremap zM :<C-U>call FoldChildren(0, 1)<CR>
-" nnoremap zR :<C-U>call FoldChildren(1, 1)<CR>
+" TODO: rebind za,zo,zc,zr,zm to their logical behavior?
+" Requires saving the fold state?
+set foldtext=MyFoldText()
+function MyFoldText()
+    let line = v:foldstart
+    let end = v:foldend
+    if (l:line == 1 || l:end == line('$'))
+        return ""
+    endif
+    let l:indent = indent(line)
+    let l:ans = ""
+    while (strlen(l:ans)<l:indent) " There's got to be a better way to do this
+        let l:ans = l:ans." "
+    endwhile
+    let l:ans = l:ans.(l:end-l:line + 1)." Children Hidden"
+    return l:ans
+endfunction
+
+
+au BufNewFile,BufRead *.wofl set filetype=outline
