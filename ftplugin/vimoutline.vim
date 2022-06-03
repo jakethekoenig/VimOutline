@@ -5,7 +5,7 @@ set foldtext=BulletFoldText()
 
 " Mappings
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
-nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
+nnoremap z<CR> :<C-U>call FoldChildren(v:count)<CR>
 " No command to fold children?
 " TODO: rebind za,zo,zc,zr,zm to their logical behavior?
 

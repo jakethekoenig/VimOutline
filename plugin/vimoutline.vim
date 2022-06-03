@@ -106,6 +106,7 @@ function! FocusContext(level)
 endfunction
 
 function! FoldChildren(level)
+    echom a:level
     let l:start = line('.')
     let l:sind = indent(l:start)
     let l:end = EndOfContext(l:start)
