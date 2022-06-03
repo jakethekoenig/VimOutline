@@ -107,11 +107,6 @@ function! MyFoldText()
     return l:ans
 endfunction
 
-
-au BufNewFile,BufRead *.wofl set filetype=outline
-au BufNewFile,BufRead *.wf set filetype=outline
-au BufNewFile,BufRead *.note set filetype=outline
-
 augroup AutoSaveGroup
   autocmd!
   " view files are about 500 bytes
