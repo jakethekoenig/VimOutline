@@ -36,6 +36,7 @@ function! GoToParent(line, level)
         let l:line = a:line
     endif
     let l:ans = Parent(l:line, a:level)
+    echom l:ans
     exe l:ans
 endfunction
 
@@ -76,7 +77,6 @@ endfunction
 
 function! WrapOutside(start, end)
     set foldmethod=manual
-    let l:line = line('.')
     if (a:start>1)
         exec "1,".(a:start-1)."fold"
     endif
@@ -97,16 +97,16 @@ function! HideIndent(level)
 endfunction
 
 function! FocusContext(level)
-    normal zE
     let l:start = line('.')
     let l:head = Parent(l:start, a:level)
     let l:tail = EndOfContext(l:head)
+    silent! normal ggzDGzD
     call WrapOutside(l:head, l:tail)
     call HideIndent(indent(l:head))
+    exec l:start
 endfunction
 
 function! FoldChildren(level)
-    echom a:level
     let l:start = line('.')
     let l:sind = indent(l:start)
     let l:end = EndOfContext(l:start)
