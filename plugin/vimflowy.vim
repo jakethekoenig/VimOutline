@@ -92,7 +92,7 @@ nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
 " TODO: rebind za,zo,zc,zr,zm to their logical behavior?
 " Requires saving the fold state?
 set foldtext=MyFoldText()
-function MyFoldText()
+function! MyFoldText()
     let line = v:foldstart
     let end = v:foldend
     if (l:line == 1 || l:end == line('$'))
@@ -111,3 +111,15 @@ endfunction
 au BufNewFile,BufRead *.wofl set filetype=outline
 au BufNewFile,BufRead *.wf set filetype=outline
 au BufNewFile,BufRead *.note set filetype=outline
+
+augroup AutoSaveGroup
+  autocmd!
+  " view files are about 500 bytes
+  " bufleave but not bufwinleave captures closing 2nd tab
+  " nested is needed by bufwrite* (if triggered via other autocmd)
+  " BufHidden for compatibility with `set hidden`
+  autocmd BufWinLeave,BufLeave,BufWritePost,BufHidden,QuitPre ?* nested silent! mkview!
+  autocmd BufWinEnter ?* silent! loadview
+augroup end
+set viewoptions=folds,cursor
+set sessionoptions=folds
