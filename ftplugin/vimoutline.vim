@@ -2,6 +2,8 @@
 set viewoptions=folds,cursor
 set sessionoptions=folds
 set foldtext=BulletFoldText()
+set nocursorline
+set nocursorcolumn
 
 " Mappings
 nnoremap zz :<C-U>call FocusContext(v:count)<CR>
