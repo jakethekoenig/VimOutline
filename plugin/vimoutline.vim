@@ -1,7 +1,7 @@
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
-function! EndContext(line)
+function! EndOfContext(line)
     if (a:line == 1)
         return line('$')
     endif
@@ -28,7 +28,7 @@ function! Parent(line, level)
     return l:at
 endfunction
 
-function! GoParent(line, level)
+function! GoToParent(line, level)
     " TODO: guard everything in this way?
     if (a:line=='.')
         let l:line = line('.')
@@ -53,7 +53,7 @@ function! Sibling(line, step)
         return l:line
     endif
     if (a:step>0)
-        let l:next = EndContext(l:line) + 1
+        let l:next = EndOfContext(l:line) + 1
         if (indent(l:next)<indent(l:line))
             return l:line
         endif
@@ -69,7 +69,7 @@ function! Sibling(line, step)
     endif
 endfunction
 
-function! JumpToSibling(line, step)
+function! GoToSibling(line, step)
     let l:sib = Sibling(a:line, a:step)
     exe l:sib
 endfunction
@@ -100,7 +100,7 @@ function! FocusContext(level)
     normal zE
     let l:start = line('.')
     let l:head = Parent(l:start, a:level)
-    let l:tail = EndContext(l:head)
+    let l:tail = EndOfContext(l:head)
     call WrapOutside(l:head, l:tail)
     call HideIndent(indent(l:head))
 endfunction
@@ -108,7 +108,7 @@ endfunction
 function! FoldChildren(level)
     let l:start = line('.')
     let l:sind = indent(l:start)
-    let l:end = EndContext(l:start)
+    let l:end = EndOfContext(l:start)
     let l:last = -1
     let l:at = l:start
     exec l:start.",".l:end."fold"

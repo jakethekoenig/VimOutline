@@ -9,9 +9,9 @@ nnoremap z<CR> :<C-U>call FoldChildren(v:count1)<CR>
 " No command to fold children?
 " TODO: rebind za,zo,zc,zr,zm to their logical behavior?
 
-nnoremap { :<C-U>call JumpToSibling('.',-v:count1)<CR>
-nnoremap } :<C-U>call JumpToSibling('.',v:count1)<CR>
-nnoremap gp :call GoParent('.', v:count1)<CR>
+nnoremap { :<C-U>call GoToSibling('.',-v:count1)<CR>
+nnoremap } :<C-U>call GoToSibling('.',v:count1)<CR>
+nnoremap gp :call GoToParent('.', v:count1)<CR>
 
 function! BulletFoldText()
     let line = v:foldstart
