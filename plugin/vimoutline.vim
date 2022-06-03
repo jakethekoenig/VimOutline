@@ -27,6 +27,31 @@ function! Parent(line, level)
     return l:at
 endfunction
 
+" Returns the line of the step^th sibling. 0 returns line. Negative numbers
+" return previous siblings. If line doesn't have that many siblings it returns
+" the first or last sibling
+
+function! Sibling(line, step)
+    if (a:step == 0)
+        return a:line
+    endif
+    if (a:step>0)
+        let l:next = EndContext(a:line) + 1
+        if (indent(l:next)<indent(a:line))
+            return a:line
+        endif
+        return Sibling(l:next, a:step - 1)
+    else
+        let l:previous = a:line - 1
+        if (indent(l:previous) < indent(a:line))
+            return a:line
+        else
+            let l:diff = (indent(l:previous) - indent(a:line))/4
+            return Sibling(Parent(l:previous, l:diff), a:step+1)
+        endif
+    endif
+endfunction
+
 function! WrapOutside(start, end)
     set foldmethod=manual
     let l:line = line('.')

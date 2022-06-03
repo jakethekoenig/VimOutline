@@ -2,6 +2,6 @@
 
 git add -A
 git commit --amend --no-edit
-rm -rf ~/.vim/bundle/vimflowy/
+rm -rf ~/.vim/bundle/VimOutline/
 vi +PluginInstall +qall
 vi -O plugin/vimoutline.vim ftplugin/vimoutline.vim
