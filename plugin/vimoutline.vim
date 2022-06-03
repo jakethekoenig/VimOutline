@@ -16,6 +16,7 @@ function! EndContext(line)
     return l:at - 1
 endfunction
 
+" TODO: make recursive
 function! Parent(line, level)
     if (a:level == 0)
         return a:line
@@ -27,29 +28,50 @@ function! Parent(line, level)
     return l:at
 endfunction
 
+function! GoParent(line, level)
+    " TODO: guard everything in this way?
+    if (a:line=='.')
+        let l:line = line('.')
+    else
+        let l:line = a:line
+    endif
+    let l:ans = Parent(l:line, a:level)
+    exe l:ans
+endfunction
+
 " Returns the line of the step^th sibling. 0 returns line. Negative numbers
 " return previous siblings. If line doesn't have that many siblings it returns
 " the first or last sibling
-
+" Uses current line if line=='.' otherwise expects number
 function! Sibling(line, step)
+    if (a:line=='.')
+        let l:line = line('.')
+    else
+        let l:line = a:line
+    endif
     if (a:step == 0)
-        return a:line
+        return l:line
     endif
     if (a:step>0)
-        let l:next = EndContext(a:line) + 1
-        if (indent(l:next)<indent(a:line))
-            return a:line
+        let l:next = EndContext(l:line) + 1
+        if (indent(l:next)<indent(l:line))
+            return l:line
         endif
         return Sibling(l:next, a:step - 1)
     else
-        let l:previous = a:line - 1
-        if (indent(l:previous) < indent(a:line))
-            return a:line
+        let l:previous = l:line - 1
+        if (indent(l:previous) < indent(l:line))
+            return l:line
         else
-            let l:diff = (indent(l:previous) - indent(a:line))/4
+            let l:diff = (indent(l:previous) - indent(l:line))/4
             return Sibling(Parent(l:previous, l:diff), a:step+1)
         endif
     endif
+endfunction
+
+function! JumpToSibling(line, step)
+    let l:sib = Sibling(a:line, a:step)
+    exe l:sib
 endfunction
 
 function! WrapOutside(start, end)
