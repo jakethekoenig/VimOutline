@@ -1,3 +1,3 @@
-au BufNewFile,BufRead *.wofl set filetype=vimoutline
-au BufNewFile,BufRead *.wf set filetype=vimoutline
-au BufNewFile,BufRead *.note set filetype=vimoutline
+au BufNewFile,BufRead *.wofl set filetype=outline
+au BufNewFile,BufRead *.wf set filetype=outline
+au BufNewFile,BufRead *.note set filetype=outline

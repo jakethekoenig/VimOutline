@@ -5,15 +5,6 @@ set foldtext=BulletFoldText()
 set nocursorline
 set nocursorcolumn
 
-" Mappings
-nnoremap zz :<C-U>call FocusContext(v:count)<CR>
-nnoremap z<CR> :<C-U>call FoldChildren(v:count)<CR>
-" No command to fold children?
-" TODO: rebind za,zo,zc,zr,zm to their logical behavior?
-
-nnoremap { :<C-U>call GoToSibling('.',-v:count1)<CR>
-nnoremap } :<C-U>call GoToSibling('.',v:count1)<CR>
-nnoremap gp :<C-U>call GoToParent('.', v:count1)<CR>
 
 function! BulletFoldText()
     let line = v:foldstart
