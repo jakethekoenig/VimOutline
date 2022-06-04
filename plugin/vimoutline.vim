@@ -1,6 +1,7 @@
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 
+" Returns the line number of the last bullet that is a descendant of line.
 function! EndOfContext(line)
     if (a:line == 1)
         return line('$')
@@ -17,6 +18,8 @@ function! EndOfContext(line)
 endfunction
 
 " TODO: make recursive
+" Returns the line number of (level-1)^th great parent of line. In other words
+" if level==0 it returns line, if level==1 it returns line's parent and so on.
 function! Parent(line, level)
     if (a:level == 0)
         return a:line
@@ -28,6 +31,7 @@ function! Parent(line, level)
     return l:at
 endfunction
 
+" Moves to the parent as described by the parent function.
 function! GoToParent(line, level)
     " TODO: guard everything in this way?
     if (a:line=='.')
