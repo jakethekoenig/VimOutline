@@ -74,11 +74,14 @@ function! Sibling(line, step)
     endif
 endfunction
 
+" Moves current line to sibling as defined by Sibling
 function! GoToSibling(line, step)
     let l:sib = Sibling(a:line, a:step)
     exe l:sib
 endfunction
 
+" Makes two new folds. One from the beginning to start and one from end to the
+" end of file.
 function! WrapOutside(start, end)
     set foldmethod=manual
     if (a:start>1)
@@ -89,6 +92,7 @@ function! WrapOutside(start, end)
     endif
 endfunction
 
+" Hides the first 4*level characters of each line
 function! HideIndent(level)
     doautocmd Syntax
     " TODO: put these file level?
@@ -100,6 +104,8 @@ function! HideIndent(level)
     endif
 endfunction
 
+" Finds the level^th parent of the current line and the end of it's context
+" than WrapOutsides those lines and hides the indent.
 function! FocusContext(level)
     let l:start = line('.')
     let l:head = Parent(l:start, a:level)
@@ -110,6 +116,7 @@ function! FocusContext(level)
     exec l:start
 endfunction
 
+" Folds Children below level
 function! FoldChildren(level)
     let l:start = line('.')
     let l:sind = indent(l:start)
