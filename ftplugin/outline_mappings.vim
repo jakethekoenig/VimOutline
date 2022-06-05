@@ -7,4 +7,4 @@ nnoremap <buffer> z<CR> :<C-U>call FoldChildren(v:count)<CR>
 
 nnoremap <buffer> { :<C-U>call GoToSibling('.',-v:count1)<CR>
 nnoremap <buffer> } :<C-U>call GoToSibling('.',v:count1)<CR>
-nnoremap <buffer> gp :<C-U>call GoToParent('.', v:count1)<CR>
+nnoremap <buffer> gp :<C-U>call GoToParentAndOpen('.', v:count1)<CR>

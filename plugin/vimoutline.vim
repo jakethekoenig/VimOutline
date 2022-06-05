@@ -44,6 +44,13 @@ function! GoToParent(line, level)
     exe l:ans
 endfunction
 
+function! GoToParentAndOpen(line, level)
+    call GoToParent(a:line, a:level)
+    if (foldclosed(line('.')) != -1)
+        call FocusContext(0)
+    endif
+endfunction
+
 " Returns the line of the step^th sibling. 0 returns line. Negative numbers
 " return previous siblings. If line doesn't have that many siblings it returns
 " the first or last sibling
