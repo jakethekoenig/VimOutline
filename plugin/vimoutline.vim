@@ -123,8 +123,7 @@ function! FoldChildren(level)
     let l:end = EndOfContext(l:start)
     let l:last = -1
     let l:at = l:start
-    exec l:start.",".l:end."fold"
-    exec "".l:start.",".l:end."foldopen!"
+    exec "silent! ".l:start.",".l:end."foldopen!"
     while (l:at <= l:end)
         if (l:last == -1 && indent(l:at)-l:sind>4*a:level)
             let l:last = l:at
