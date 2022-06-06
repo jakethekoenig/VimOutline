@@ -1,3 +1,7 @@
+if exists('g:vimoutline')
+  finish
+endif
+let g:vimoutline = 1
 
 nnoremap <leader>n :tabe ~/.vimflowy.note<cr>
 

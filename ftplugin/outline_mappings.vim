@@ -1,3 +1,7 @@
+if exists('g:vimoutline_mappings')
+  finish
+endif
+let g:vimoutline_mappings = 1
 
 " Mappings
 nnoremap <buffer> zz :<C-U>call FocusContext(v:count)<CR>

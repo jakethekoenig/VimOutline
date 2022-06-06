@@ -1,3 +1,8 @@
+if exists('g:vimoutline_settings')
+  finish
+endif
+let g:vimoutline_settings = 1
+
 " Outline Style
 set viewoptions=folds,cursor
 set sessionoptions=folds
