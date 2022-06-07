@@ -17,13 +17,13 @@ The asterixis are unnecessary, the plugin purely uses indentation level to deter
 
 The most useful mappings are:
 ``` vimscript
-[context]zz     " Focus on the cursor's node. If a number is given then the context^th parent of that node.
-[level]z[enter] " Fold all of the cursor node's children to [level].
-[n]gp           " Go to the n^th (default=1) parent of the cursor node.
+{context}zz     " Focus on the cursor's node. If a number is given then the context^th parent of that node.
+{level}z<CR>    " Fold all of the cursor node's children to [level].
+{n}gp           " Go to the n^th (default=1) parent of the cursor node.
 }               " Go to the next sibling of current node
 {               " Go to the previous sibling of current node
 ```
-Note these shadow built in vim defaults. I don't put blank lines in my outlines so I didn't think `{}` would be missed. I thought `zz` and `z[enter]` as defined here and as defaults perform similar operations.
+Note these shadow built in vim defaults. I don't put blank lines in my outlines so I didn't think `{}` would be missed. I thought `zz` and `z<cr>` as defined here and as defaults perform similar operations.
 
 ## Installation
 
