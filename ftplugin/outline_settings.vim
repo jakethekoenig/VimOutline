@@ -6,12 +6,12 @@ let g:vimoutline_settings = 1
 " Outline Style
 set viewoptions=folds,cursor
 set sessionoptions=folds
-set foldtext=BulletFoldText()
+set foldtext=VimOutline#BulletFoldText()
 set nocursorline
 set nocursorcolumn
 
 
-function! BulletFoldText()
+function! VimOutline#BulletFoldText()
     let line = v:foldstart
     let end = v:foldend
     if (l:line == 1 || l:end == line('$'))
