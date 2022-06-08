@@ -3,8 +3,6 @@ if exists('g:vimoutline')
 endif
 let g:vimoutline = 1
 
-nnoremap <leader>n :tabe ~/.notes.wofl<cr>
-
 " Returns the line number of the last bullet that is a descendant of line.
 function! EndOfContext(line)
     if (a:line == 1)
