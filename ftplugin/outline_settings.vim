@@ -6,25 +6,10 @@ let g:vimoutline_settings = 1
 " Outline Style
 set viewoptions=folds,cursor
 set sessionoptions=folds
-set foldtext=VimOutline#BulletFoldText()
+set foldtext=vimoutline#BulletFoldText()
 set nocursorline
 set nocursorcolumn
 
-
-function! VimOutline#BulletFoldText()
-    let line = v:foldstart
-    let end = v:foldend
-    if (l:line == 1 || l:end == line('$'))
-        return ""
-    endif
-    let l:indent = indent(line)
-    let l:ans = ""
-    while (strlen(l:ans)<l:indent) " There's got to be a better way to do this
-        let l:ans = l:ans." "
-    endwhile
-    let l:ans = l:ans.(l:end-l:line + 1)." Children Hidden"
-    return l:ans
-endfunction
 
 augroup AutoSaveGroup
   autocmd!
