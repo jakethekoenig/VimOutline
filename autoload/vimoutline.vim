@@ -93,6 +93,15 @@ function! vimoutline#GoToSibling(line, step)
     exe l:sib
 endfunction
 
+" Moves current line to sibling as defined by Sibling
+function! vimoutline#GoToSiblingAndOpen(line, step)
+    call vimoutline#GoToSibling(a:line, a:step)
+    if (foldclosed(line('.')) != -1)
+        normal zR
+        call vimoutline#FocusContext(0)
+    endif
+endfunction
+
 " Makes two new folds. One from the beginning to start and one from end to the
 " end of file.
 function! vimoutline#WrapOutside(start, end)
