@@ -4,6 +4,8 @@ A Workflowy inspired vim plugin. It turns out this is not a very original idea, 
 
 ## Basic Usage
 
+![](example_usage.gif)
+
 The plugin affords some basic movement and focusing mappings as well as stylings for an outline e.g. some text structured like this:
 ```
 * Head Node
