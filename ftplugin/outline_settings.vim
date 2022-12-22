@@ -9,6 +9,7 @@ set sessionoptions=folds
 set foldtext=vimoutline#BulletFoldText()
 set nocursorline
 set nocursorcolumn
+set breakindent
 
 
 augroup AutoSaveGroup
